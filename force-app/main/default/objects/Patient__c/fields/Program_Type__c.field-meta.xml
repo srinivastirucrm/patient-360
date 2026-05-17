@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Program_Type__c</fullName>
+    <label>Program Type</label>
+    <type>Picklist</type>
+    <valueSet>
+        <valueSetDefinition>
+            <sorted>false</sorted>
+            <value>
+                <fullName>Care Management</fullName>
+                <default>true</default>
+                <label>Care Management</label>
+            </value>
+            <value>
+                <fullName>Behavioral Health</fullName>
+                <default>false</default>
+                <label>Behavioral Health</label>
+            </value>
+            <value>
+                <fullName>Chronic Care</fullName>
+                <default>false</default>
+                <label>Chronic Care</label>
+            </value>
+            <value>
+                <fullName>Wellness</fullName>
+                <default>false</default>
+                <label>Wellness</label>
+            </value>
+        </valueSetDefinition>
+    </valueSet>
+</CustomField>

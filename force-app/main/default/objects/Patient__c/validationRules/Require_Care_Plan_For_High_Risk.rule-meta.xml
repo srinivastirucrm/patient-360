@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <active>true</active>
+    <errorConditionFormula>AND(ISPICKVAL(Risk_Flag__c, "High"), ISBLANK(Care_Plan_Summary__c))</errorConditionFormula>
+    <errorDisplayField>Care_Plan_Summary__c</errorDisplayField>
+    <errorMessage>High-risk patients must have a care plan summary.</errorMessage>
+    <fullName>Require_Care_Plan_For_High_Risk</fullName>
+</ValidationRule>

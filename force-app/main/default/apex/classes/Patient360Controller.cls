@@ -18,7 +18,7 @@ public with sharing class Patient360Controller {
         response.phone = patient.Phone;
         response.programType = patient.Program_Type__c;
         response.riskFlag = patient.Risk_Flag__c;
-        response.lastInteraction = patient.Last_Interaction_Date__c != null ? String.valueOf(patient.Last_Interaction_Date__c) : 'N/A';
+        response.lastInteraction = patient.Last_Interaction_Date__c != null ? patient.Last_Interaction_Date__c.format() : 'N/A';
         response.carePlanSummary = patient.Care_Plan_Summary__c;
         response.appointments = new List<AppointmentSummary>();
         response.cases = new List<CaseSummary>();
