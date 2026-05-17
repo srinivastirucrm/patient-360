@@ -1,0 +1,112 @@
+<template>
+    <lightning-card title="Patient 360">
+        <div class="slds-p-around_medium">
+            <template if:true={isLoading}>
+                <div class="slds-text-align_center slds-p-vertical_medium">
+                    <lightning-spinner alternative-text="Loading patient summary" size="medium"></lightning-spinner>
+                </div>
+            </template>
+
+            <template if:true={errorMessage}>
+                <div class="slds-text-color_error slds-m-bottom_medium">{errorMessage}</div>
+            </template>
+
+            <template if:true={patientData}>
+                <div class="slds-grid slds-wrap slds-grid_vertical-align-center slds-m-bottom_medium header-container">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_3-of-4">
+                        <p class="slds-text-heading_large slds-m-bottom_x-small">{patientData.name}</p>
+                        <p class="slds-text-body_regular slds-m-bottom_x-small">{patientData.email} · {patientData.phone}</p>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-4 slds-text-align_right@slds-medium">
+                        <p class="slds-text-body_regular"><strong>Program:</strong> {patientData.programType}</p>
+                        <p class="slds-text-body_regular"><strong>Risk:</strong> {patientData.riskFlag}</p>
+                        <p class="slds-text-body_regular"><strong>Last interaction:</strong> {patientData.lastInteraction}</p>
+                    </div>
+                </div>
+
+                <div class="filters slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-combobox
+                            name="program"
+                            label="Filter by program"
+                            options={programOptions}
+                            value={selectedProgram}
+                            onchange={handleProgramChange}
+                        ></lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-4">
+                        <lightning-input
+                            type="date"
+                            name="startDate"
+                            label="From"
+                            value={filterStartDate}
+                            onchange={handleStartDateChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-4">
+                        <lightning-input
+                            type="date"
+                            name="endDate"
+                            label="To"
+                            value={filterEndDate}
+                            onchange={handleEndDateChange}
+                        ></lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4 slds-align_absolute-center slds-p-top_small">
+                        <lightning-button label="Apply filters" variant="brand" onclick={handleApplyFilters}></lightning-button>
+                    </div>
+                </div>
+
+                <lightning-tabset active-tab-value={activeTab} onactive={handleTabActive} class="patient-tabset">
+                    <lightning-tab label="Appointments" value="appointments">
+                        <template if:true={appointments.length}>
+                            <lightning-datatable
+                                key-field="id"
+                                data={appointments}
+                                columns={appointmentColumns}
+                                hide-checkbox-column
+                            ></lightning-datatable>
+                        </template>
+                        <template if:false={appointments.length}>
+                            <div class="empty-state">No appointments match the selected filters.</div>
+                        </template>
+                    </lightning-tab>
+
+                    <lightning-tab label="Cases" value="cases">
+                        <template if:true={cases.length}>
+                            <lightning-datatable
+                                key-field="id"
+                                data={cases}
+                                columns={caseColumns}
+                                hide-checkbox-column
+                            ></lightning-datatable>
+                        </template>
+                        <template if:false={cases.length}>
+                            <div class="empty-state">No support cases were found.</div>
+                        </template>
+                    </lightning-tab>
+
+                    <lightning-tab label="Care plan" value="careplan">
+                        <div class="slds-m-bottom_medium">
+                            <p class="slds-text-body_regular">{patientData.carePlanSummary}</p>
+                        </div>
+                        <template if:true={notes.length}>
+                            <div class="note-list">
+                                <template for:each={notes} for:item="note">
+                                    <div key={note.id} class="note-item slds-box slds-m-bottom_small">
+                                        <p class="slds-text-heading_small">{note.title}</p>
+                                        <p class="slds-text-body_small slds-m-top_xx-small">{note.summary}</p>
+                                        <p class="slds-text-color_weak slds-text-body_small slds-m-top_x-small">Created: {formatDate(note.createdDate)}</p>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                        <template if:false={notes.length}>
+                            <div class="empty-state">No care notes or summary records are available.</div>
+                        </template>
+                    </lightning-tab>
+                </lightning-tabset>
+            </template>
+        </div>
+    </lightning-card>
+</template>
